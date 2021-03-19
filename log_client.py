@@ -2,6 +2,7 @@ import socket
 from python_graphql_client import GraphqlClient
 import logging
 import datetime
+from log_viver import add_new_line
 
 sock = socket.socket()
 sock.bind(('', 3333))
@@ -39,5 +40,7 @@ while True:
     name = data[0]
     age = data[1]
     role = data[2]
-    logging.debug('{} - {} entered {}. He is {}'.format(datetime.datetime.now(), name, str(adr), role))
+    string = '{} - {} entered {}. He is {}'.format(datetime.datetime.now(), name, str(adr), role)
+    logging.debug(string)
+    add_new_line(string)
     conn.close()
