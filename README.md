@@ -1,2 +1,2 @@
 # IQPark_log_sever
-*pip install python-socketio
+*pip install python-socketio*
