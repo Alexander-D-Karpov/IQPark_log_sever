@@ -1,6 +1,6 @@
 from socket import *
 
-sock = socket.socket(AF_INET,SOCK_STREAM)
+sock = socket.socket()
 
 def send_to_log(us_id, adr):
     sock.connect(('localhost', 4040))
