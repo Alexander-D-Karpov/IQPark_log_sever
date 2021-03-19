@@ -2,7 +2,7 @@ import socket
 from send_to_log import send_to_log as messeger 
 
 sock = socket.socket()
-sock.bind(('', 9999))
+sock.bind(('', 8888))
 
 while True:
     sock.listen(1)
