@@ -1,2 +1,3 @@
 # IQPark_log_sever
-*pip install python-socketio*
+*pip install socket*
+*python_graphql_client*
