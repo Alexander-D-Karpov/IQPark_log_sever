@@ -11,7 +11,7 @@ while True:
     conn.send('Ok'.encode()) #sends key
     inf = conn.recv(1024).decode() #gets encoded id
     adr = conn.recv(1024).decode() #gets encoded adress
-     graphql_connect(id)
+    graphql_connect(id)
     conn.close()
 
 def graphql_con(id):
