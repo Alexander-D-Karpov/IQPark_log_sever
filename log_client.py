@@ -2,7 +2,7 @@ import socket
 from python_graphql_client import GraphqlClient
 
 sock = socket.socket()
-sock.bind(('', 7777))
+sock.bind(('', 4040))
 sock.listen(1)
 
 while True:
@@ -11,21 +11,13 @@ while True:
     conn.send('Ok'.encode()) #sends key
     inf = conn.recv(1024).decode() #gets encoded id
     adr = conn.recv(1024).decode() #gets encoded adress
-     graphql_connect(id)
+    data = users[1]
+    name = data[0]
+    age = data[1]
+    role = data[2]
+    print(name, 'entered', adr, 'He is', age, 'and', role)
     conn.close()
 
-def graphql_con(id):
-    client = GraphqlClient(endpoint)
-    query = """
-    query countryQuery($user_data: String) {
-        user_data(id:$id) {
-            id
-            name
-            role
-        }
-    }
-    """
-    variables = {"id": id}
-
-    data = client.execute(query=query, variables=variables)
-    return data
+users = {
+    '1' : ['Kasha Sarpov', '69', 'admin']
+}
