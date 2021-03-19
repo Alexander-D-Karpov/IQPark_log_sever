@@ -1,23 +1,15 @@
-from socket import *
+import socket
+from send_to_log import send_to_log as messeger 
 
 sock = socket.socket()
-
-def send_to_log(us_id, adr):
-    sock.connect(('localhost', 4040))
-    data = sock.recv(1024).decode() # recev key
-    sock.send(us_id)
-    sock.send(adr)
-    sock.close()
-    return 0
-
+sock.bind(('', 9999))
 
 while True:
-    sock.bind(('', 4545))
     sock.listen(1)
     conn, addr = sock.accept()
     print('connected:', addr)
     conn.send('Ok'.encode()) #sends key
     us_id = int(conn.recv(1024).decode()) #gets encoded id
-    sock.close()
-    send_to_log(us_id, addr)
+    messeger(us_id, addr)
+    conn.close()
 
