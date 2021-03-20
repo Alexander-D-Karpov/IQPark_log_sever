@@ -1,16 +1,25 @@
 from tkinter import *
+import time
 file = open('users.log', 'r')
 lines = file.read().splitlines()
 file.close()
 
-x = 0
+length = 0
 root = Tk()
 t = Text(root)
 for x in lines:
     t.insert(END, x + '\n')
+    length += 1
 t.pack()
-root.mainloop()
+while True:
+    file = open('users.log', 'r')
+    lines = file.read().splitlines()
+    lines_len = len(lines)
+    file.close()
+    if lines_len > length:
+        for i in range(length, lines_len):
+            t.insert(END, lines[i] + '\n')
 
-def add_new_line(str):
-    t.insert(str, x + '\n')
-    x += 1
+    time.sleep(1)
+    root.mainloop()
+
