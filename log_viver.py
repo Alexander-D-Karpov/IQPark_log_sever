@@ -1,24 +1,41 @@
 from tkinter import *
 import time
-file = open('users.log', 'r')
-lines = file.read().splitlines()
+from watchdog.observers import Observer
+from watchdog.events import FileModifiedEvent
+file = open('logs/users.log', 'r')
+lines = file.read().splitlines()[::-1]
 file.close()
 
-length = 0
+def update():
+    with open("logs/users.log","r") as f:
+        lines = file.read().splitlines()[::-1]
+        t.delete("1.0", "end")
+        for x in lines:
+            t.insert(END, x + '\n')
+        t.pack()
+    T.after(1000, update)
+
+class EventHandler():
+    def on_any_event(self, event):
+        update()
+
+
 root = Tk()
 t = Text(root)
 for x in lines:
     t.insert(END, x + '\n')
-    length += 1
 t.pack()
-while True:
-    cur_len_lines = len(lines)
-    file = open('users.log', 'r')
-    lines = file.read().splitlines()
-    len_lines = len(lines)
-    file.close()
-    if len_lines > cur_len_lines:
-        t.insert(END, lines[cur_len_lines] + '\n')
-    root.mainloop()
-    time.sleep(1)
 
+if __name__ == "__main__":
+    path = "logs/"
+    event_handler = FileModifiedEvent('users.log')
+    observer = Observer()
+    observer.schedule(event_handler, path, recursive=True)
+    observer.start()
+    try:
+        while True:
+            root.mainloop()
+            time.sleep(1)
+    finally:
+        observer.stop()
+        observer.join()

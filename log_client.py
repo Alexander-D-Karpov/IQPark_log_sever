@@ -2,13 +2,12 @@ import socket
 from python_graphql_client import GraphqlClient
 import logging
 import datetime
-from log_viver import add_new_line
 
 sock = socket.socket()
 sock.bind(('', 3333))
 sock.listen(1)
 
-logging.basicConfig(filename='users.log', level=logging.DEBUG)
+logging.basicConfig(filename='logs/users.log', level=logging.INFO)
 users = {
     '1' : ['Kasha Sarpov', '69', 'admin'],
     '2' : ['Kasha Sarpov', '68', 'user'],
@@ -27,12 +26,11 @@ users = {
 while True:
     conn, addr = sock.accept()
     conn.send('Ok'.encode()) #sends key
-    inf = conn.recv(1024).decode() #gets encoded id
+    inf = conn.recv(1024).decode() #gets encoded data
     lst = inf.split('(')
     id = lst[0]
-    adr = lst[1].split(', ')
-    adr = adr[0]
-    if str(adr) == '127.0.0.1':
+    adr = lst[1]
+    if "127.0.0.1" in adr:
         adr = 'enterance'
     else:
         adr = 'park'
@@ -40,7 +38,6 @@ while True:
     name = data[0]
     age = data[1]
     role = data[2]
-    string = '{} - {} entered {}. He is {}'.format(datetime.datetime.now(), name, str(adr), role)
-    logging.debug(string)
-    add_new_line(string)
+    string = '{} - {}({}) entered {}. He is {}'.format(datetime.datetime.now(), name, id, str(adr), role)
+    logging.info(string)
     conn.close()
