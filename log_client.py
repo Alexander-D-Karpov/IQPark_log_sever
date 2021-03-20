@@ -4,6 +4,9 @@ import logging
 import datetime
 from os import listdir
 from os.path import isfile, join
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
+from Crypto import Random
 
 sock = socket.socket()
 sock.bind(('', 3333))
@@ -48,9 +51,18 @@ while True:
     else:
         logging.config.fileConfig(filename='logs/{}.log'.format(datetime.datetime.now().date()), level=logging.INFO)
     conn, addr = sock.accept()
-    conn.send('Ok'.encode()) #sends key
-    inf = conn.recv(1024).decode() #gets encoded data
-    lst = inf.split('(')
+
+    keyPair = RSA.generate(1024)
+    pubKey = keyPair.publickey()
+    exportedPubKey = pubKey.exportKey(format='PEM')
+    conn.send(exportedPubKey) #sends key
+
+    encrypted = conn.recv(2048) #gets encoded data
+    decryptor = PKCS1_OAEP.new(keyPair)
+    decrypted = decryptor.decrypt(encrypted)
+    inf = decrypted.decode()
+
+    lst = inf.split('; ')
     id = lst[0]
     adr = lst[1]
     if "127.0.0.1" in adr:
@@ -61,8 +73,7 @@ while True:
     name = data[0]
     age = data[1]
     role = data[2]
-    data = graphql_con(int(id))
+    #data = graphql_con(int(id))
     string = '{} - {}({}) entered {}. He is {}'.format(datetime.datetime.now().time(), name, id, str(adr), role)
     logging.info(string)
-    logging.info(data)
     conn.close()

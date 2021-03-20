@@ -12,7 +12,7 @@ def update():
     lines = file.read().splitlines()[::-1]
     file.close()
     t.delete("1.0", "end")
-    for x in lines:
+    for x in lines: 
         t.insert(END, x + '\n')
     t.pack()
     root.after(1000, update)
