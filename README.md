@@ -1,6 +1,6 @@
 # IQPark_log_sever
-*pip install socket;*
-*pip python_graphql_client*
+```ip install socket```
+```pip python_graphql_client```
 
 
 **servers:**
