@@ -12,14 +12,13 @@ for x in lines:
     length += 1
 t.pack()
 while True:
+    cur_len_lines = len(lines)
     file = open('users.log', 'r')
     lines = file.read().splitlines()
-    lines_len = len(lines)
+    len_lines = len(lines)
     file.close()
-    if lines_len > length:
-        for i in range(length, lines_len):
-            t.insert(END, lines[i] + '\n')
-
-    time.sleep(1)
+    if len_lines > cur_len_lines:
+        t.insert(END, lines[cur_len_lines] + '\n')
     root.mainloop()
+    time.sleep(1)
 
