@@ -1,6 +1,7 @@
 import os
 import time
 
-while True:
+for i in range(10000):
     os.system("python3 client.py")
-    time.sleep(0.5)
+    os.system("python3 client.py")
+    os.system("python3 client.py")
