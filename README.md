@@ -4,7 +4,7 @@
 
 
 **servers:**
-
+```
 python3 log_client.py
 
 python3 log_viver.py
@@ -19,3 +19,4 @@ python3 client.py
 
 
 python3 log_viver.py 
+```
