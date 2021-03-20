@@ -1,9 +1,6 @@
 from tkinter import *
 import tkinter as tk
 import time
-file = open('logs/users.log', 'r')
-lines = file.read().splitlines()[::-1]
-file.close()
 
 class FullScreenApp(object):
     def __init__(self, master, **kwargs):
@@ -19,20 +16,20 @@ class FullScreenApp(object):
         self.master.geometry(self._geom)
         self._geom=geom
 
+root=tk.Tk()
+app=FullScreenApp(root)
+t = Text(root)
+
 def update():
     file = open('logs/users.log', 'r')
     lines = file.read().splitlines()[::-1]
     file.close()
-
     t.delete("1.0", "end")
     for x in lines:
         t.insert(END, x + '\n')
     t.pack()
+    root.after(1000, update)
 
-
-root=tk.Tk()
-app=FullScreenApp(root)
-t = Text(root)
 while True:
     update()
     root.mainloop()
