@@ -1,13 +1,15 @@
 import socket
-from python_graphql_client import GraphqlClient
+#from python_graphql_client import GraphqlClient
 import logging
 import datetime
+from os import listdir
+from os.path import isfile, join
 
 sock = socket.socket()
 sock.bind(('', 3333))
 sock.listen(1)
+onlyfiles = [f for f in listdir('logs/') if isfile(join('logs/', f))]
 
-logging.basicConfig(filename='logs/users.log', level=logging.INFO)
 users = {
     '1' : ['Kasha Sarpov', '69', 'admin'],
     '2' : ['Kasha Sarpov', '68', 'user'],
@@ -23,7 +25,28 @@ users = {
     '12' : ['Kasha Sarpov', '58', 'noname'],
     '13' : ['Kasha Sarpov', '57', 'user']
 }
+
+def graphql_con(id):
+    client = GraphqlClient(endpoint)
+    query = """
+    query countryQuery($user_data: String) {
+        user_data(id:$id) {
+            id
+            name
+            role
+        }
+    }
+    """
+    variables = {"id": id}
+
+    data = client.execute(query=query, variables=variables)
+    return data 
+
 while True:
+    if not datetime.datetime.now().date() in onlyfiles:
+        logging.basicConfig(filename='logs/{}.log'.format(datetime.datetime.now().date()), level=logging.INFO)
+    else:
+        logging.config.fileConfig(filename='logs/{}.log'.format(datetime.datetime.now().date()), level=logging.INFO)
     conn, addr = sock.accept()
     conn.send('Ok'.encode()) #sends key
     inf = conn.recv(1024).decode() #gets encoded data
@@ -38,6 +61,8 @@ while True:
     name = data[0]
     age = data[1]
     role = data[2]
-    string = '{} - {}({}) entered {}. He is {}'.format(datetime.datetime.now(), name, id, str(adr), role)
+    data = graphql_con(int(id))
+    string = '{} - {}({}) entered {}. He is {}'.format(datetime.datetime.now().time(), name, id, str(adr), role)
     logging.info(string)
+    logging.info(data)
     conn.close()
