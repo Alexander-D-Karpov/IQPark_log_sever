@@ -1,6 +1,8 @@
 # IQPark_log_sever
-```ip install socket```
-```pip python_graphql_client```
+```pip install python_graphql_client```
+```pip install pycrypto```
+```pip install tkinter```
+
 
 
 **servers:**
