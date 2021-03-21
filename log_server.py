@@ -5,7 +5,7 @@ from Crypto.Cipher import PKCS1_OAEP
 from Crypto import Random
 
 sock = socket.socket()
-sock.bind(('', 7070))
+sock.bind(('', 9999))
 sock.listen(1)
 
 

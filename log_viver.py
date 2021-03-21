@@ -4,7 +4,10 @@ import time
 import datetime
 
 root = tk.Tk()
-t = Text(root)
+root.title("logs")
+w, h = root.winfo_screenwidth(), root.winfo_screenheight()
+root.geometry("%dx%d+0+0" % (w, h))
+t = Text(root, width=100, height=100)
 
 def update():
     filename='logs/{}.log'.format(datetime.datetime.now().date())
